@@ -1,0 +1,458 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E743148214ED6FEF008CBA71 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E743148114ED6FEF008CBA71 /* UIKit.framework */; };
+		E743148414ED6FEF008CBA71 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E743148314ED6FEF008CBA71 /* Foundation.framework */; };
+		E743148614ED6FEF008CBA71 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E743148514ED6FEF008CBA71 /* CoreGraphics.framework */; };
+		E743148C14ED6FEF008CBA71 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E743148A14ED6FEF008CBA71 /* InfoPlist.strings */; };
+		E743148E14ED6FEF008CBA71 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E743148D14ED6FEF008CBA71 /* main.m */; };
+		E743149214ED6FEF008CBA71 /* FXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E743149114ED6FEF008CBA71 /* FXAppDelegate.m */; };
+		E743149514ED6FEF008CBA71 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E743149314ED6FEF008CBA71 /* MainStoryboard_iPhone.storyboard */; };
+		E743149814ED6FEF008CBA71 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E743149614ED6FEF008CBA71 /* MainStoryboard_iPad.storyboard */; };
+		E743149B14ED6FEF008CBA71 /* FXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E743149A14ED6FEF008CBA71 /* FXViewController.m */; };
+		E74314A314ED6FEF008CBA71 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E74314A214ED6FEF008CBA71 /* SenTestingKit.framework */; };
+		E74314A414ED6FEF008CBA71 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E743148114ED6FEF008CBA71 /* UIKit.framework */; };
+		E74314A514ED6FEF008CBA71 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E743148314ED6FEF008CBA71 /* Foundation.framework */; };
+		E74314AD14ED6FEF008CBA71 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E74314AB14ED6FEF008CBA71 /* InfoPlist.strings */; };
+		E74314B014ED6FEF008CBA71 /* LuaTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E74314AF14ED6FEF008CBA71 /* LuaTestTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E74314A614ED6FEF008CBA71 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E743147414ED6FEF008CBA71 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E743147C14ED6FEF008CBA71;
+			remoteInfo = LuaTest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E743147D14ED6FEF008CBA71 /* LuaTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LuaTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E743148114ED6FEF008CBA71 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E743148314ED6FEF008CBA71 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E743148514ED6FEF008CBA71 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E743148914ED6FEF008CBA71 /* LuaTest-Info.plist */ = {isa = PBXFileReference; path = "LuaTest-Info.plist"; sourceTree = "<group>"; };
+		E743148B14ED6FEF008CBA71 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E743148D14ED6FEF008CBA71 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E743148F14ED6FEF008CBA71 /* LuaTest-Prefix.pch */ = {isa = PBXFileReference; path = "LuaTest-Prefix.pch"; sourceTree = "<group>"; };
+		E743149014ED6FEF008CBA71 /* FXAppDelegate.h */ = {isa = PBXFileReference; path = FXAppDelegate.h; sourceTree = "<group>"; };
+		E743149114ED6FEF008CBA71 /* FXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FXAppDelegate.m; sourceTree = "<group>"; };
+		E743149414ED6FEF008CBA71 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		E743149714ED6FEF008CBA71 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		E743149914ED6FEF008CBA71 /* FXViewController.h */ = {isa = PBXFileReference; path = FXViewController.h; sourceTree = "<group>"; };
+		E743149A14ED6FEF008CBA71 /* FXViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FXViewController.m; sourceTree = "<group>"; };
+		E74314A114ED6FEF008CBA71 /* LuaTestTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LuaTestTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E74314A214ED6FEF008CBA71 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		E74314AA14ED6FEF008CBA71 /* LuaTestTests-Info.plist */ = {isa = PBXFileReference; path = "LuaTestTests-Info.plist"; sourceTree = "<group>"; };
+		E74314AC14ED6FEF008CBA71 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E74314AE14ED6FEF008CBA71 /* LuaTestTests.h */ = {isa = PBXFileReference; path = LuaTestTests.h; sourceTree = "<group>"; };
+		E74314AF14ED6FEF008CBA71 /* LuaTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LuaTestTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E743147A14ED6FEF008CBA71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E743148214ED6FEF008CBA71 /* UIKit.framework in Frameworks */,
+				E743148414ED6FEF008CBA71 /* Foundation.framework in Frameworks */,
+				E743148614ED6FEF008CBA71 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E743149D14ED6FEF008CBA71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E74314A314ED6FEF008CBA71 /* SenTestingKit.framework in Frameworks */,
+				E74314A414ED6FEF008CBA71 /* UIKit.framework in Frameworks */,
+				E74314A514ED6FEF008CBA71 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E743147214ED6FEF008CBA71 = {
+			isa = PBXGroup;
+			children = (
+				E743148714ED6FEF008CBA71 /* LuaTest */,
+				E74314A814ED6FEF008CBA71 /* LuaTestTests */,
+				E743148014ED6FEF008CBA71 /* Frameworks */,
+				E743147E14ED6FEF008CBA71 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E743147E14ED6FEF008CBA71 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E743147D14ED6FEF008CBA71 /* LuaTest.app */,
+				E74314A114ED6FEF008CBA71 /* LuaTestTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E743148014ED6FEF008CBA71 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E743148114ED6FEF008CBA71 /* UIKit.framework */,
+				E743148314ED6FEF008CBA71 /* Foundation.framework */,
+				E743148514ED6FEF008CBA71 /* CoreGraphics.framework */,
+				E74314A214ED6FEF008CBA71 /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E743148714ED6FEF008CBA71 /* LuaTest */ = {
+			isa = PBXGroup;
+			children = (
+				E743149014ED6FEF008CBA71 /* FXAppDelegate.h */,
+				E743149114ED6FEF008CBA71 /* FXAppDelegate.m */,
+				E743149314ED6FEF008CBA71 /* MainStoryboard_iPhone.storyboard */,
+				E743149614ED6FEF008CBA71 /* MainStoryboard_iPad.storyboard */,
+				E743149914ED6FEF008CBA71 /* FXViewController.h */,
+				E743149A14ED6FEF008CBA71 /* FXViewController.m */,
+				E743148814ED6FEF008CBA71 /* Supporting Files */,
+			);
+			path = LuaTest;
+			sourceTree = "<group>";
+		};
+		E743148814ED6FEF008CBA71 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E743148914ED6FEF008CBA71 /* LuaTest-Info.plist */,
+				E743148A14ED6FEF008CBA71 /* InfoPlist.strings */,
+				E743148D14ED6FEF008CBA71 /* main.m */,
+				E743148F14ED6FEF008CBA71 /* LuaTest-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E74314A814ED6FEF008CBA71 /* LuaTestTests */ = {
+			isa = PBXGroup;
+			children = (
+				E74314AE14ED6FEF008CBA71 /* LuaTestTests.h */,
+				E74314AF14ED6FEF008CBA71 /* LuaTestTests.m */,
+				E74314A914ED6FEF008CBA71 /* Supporting Files */,
+			);
+			path = LuaTestTests;
+			sourceTree = "<group>";
+		};
+		E74314A914ED6FEF008CBA71 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E74314AA14ED6FEF008CBA71 /* LuaTestTests-Info.plist */,
+				E74314AB14ED6FEF008CBA71 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E743147C14ED6FEF008CBA71 /* LuaTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E74314B314ED6FEF008CBA71 /* Build configuration list for PBXNativeTarget "LuaTest" */;
+			buildPhases = (
+				E743147914ED6FEF008CBA71 /* Sources */,
+				E743147A14ED6FEF008CBA71 /* Frameworks */,
+				E743147B14ED6FEF008CBA71 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LuaTest;
+			productName = LuaTest;
+			productReference = E743147D14ED6FEF008CBA71 /* LuaTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E74314A014ED6FEF008CBA71 /* LuaTestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E74314B614ED6FEF008CBA71 /* Build configuration list for PBXNativeTarget "LuaTestTests" */;
+			buildPhases = (
+				E743149C14ED6FEF008CBA71 /* Sources */,
+				E743149D14ED6FEF008CBA71 /* Frameworks */,
+				E743149E14ED6FEF008CBA71 /* Resources */,
+				E743149F14ED6FEF008CBA71 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E74314A714ED6FEF008CBA71 /* PBXTargetDependency */,
+			);
+			name = LuaTestTests;
+			productName = LuaTestTests;
+			productReference = E74314A114ED6FEF008CBA71 /* LuaTestTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E743147414ED6FEF008CBA71 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = E743147714ED6FEF008CBA71 /* Build configuration list for PBXProject "LuaTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E743147214ED6FEF008CBA71;
+			productRefGroup = E743147E14ED6FEF008CBA71 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E743147C14ED6FEF008CBA71 /* LuaTest */,
+				E74314A014ED6FEF008CBA71 /* LuaTestTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E743147B14ED6FEF008CBA71 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E743148C14ED6FEF008CBA71 /* InfoPlist.strings in Resources */,
+				E743149514ED6FEF008CBA71 /* MainStoryboard_iPhone.storyboard in Resources */,
+				E743149814ED6FEF008CBA71 /* MainStoryboard_iPad.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E743149E14ED6FEF008CBA71 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E74314AD14ED6FEF008CBA71 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E743149F14ED6FEF008CBA71 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E743147914ED6FEF008CBA71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E743148E14ED6FEF008CBA71 /* main.m in Sources */,
+				E743149214ED6FEF008CBA71 /* FXAppDelegate.m in Sources */,
+				E743149B14ED6FEF008CBA71 /* FXViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E743149C14ED6FEF008CBA71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E74314B014ED6FEF008CBA71 /* LuaTestTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E74314A714ED6FEF008CBA71 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E743147C14ED6FEF008CBA71 /* LuaTest */;
+			targetProxy = E74314A614ED6FEF008CBA71 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E743148A14ED6FEF008CBA71 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E743148B14ED6FEF008CBA71 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		E743149314ED6FEF008CBA71 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E743149414ED6FEF008CBA71 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		E743149614ED6FEF008CBA71 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E743149714ED6FEF008CBA71 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		E74314AB14ED6FEF008CBA71 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E74314AC14ED6FEF008CBA71 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E74314B114ED6FEF008CBA71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E74314B214ED6FEF008CBA71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E74314B414ED6FEF008CBA71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LuaTest/LuaTest-Prefix.pch";
+				INFOPLIST_FILE = "LuaTest/LuaTest-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		E74314B514ED6FEF008CBA71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LuaTest/LuaTest-Prefix.pch";
+				INFOPLIST_FILE = "LuaTest/LuaTest-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		E74314B714ED6FEF008CBA71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LuaTest.app/LuaTest";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LuaTest/LuaTest-Prefix.pch";
+				INFOPLIST_FILE = "LuaTestTests/LuaTestTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		E74314B814ED6FEF008CBA71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LuaTest.app/LuaTest";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LuaTest/LuaTest-Prefix.pch";
+				INFOPLIST_FILE = "LuaTestTests/LuaTestTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E743147714ED6FEF008CBA71 /* Build configuration list for PBXProject "LuaTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E74314B114ED6FEF008CBA71 /* Debug */,
+				E74314B214ED6FEF008CBA71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E74314B314ED6FEF008CBA71 /* Build configuration list for PBXNativeTarget "LuaTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E74314B414ED6FEF008CBA71 /* Debug */,
+				E74314B514ED6FEF008CBA71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E74314B614ED6FEF008CBA71 /* Build configuration list for PBXNativeTarget "LuaTestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E74314B714ED6FEF008CBA71 /* Debug */,
+				E74314B814ED6FEF008CBA71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E743147414ED6FEF008CBA71 /* Project object */;
+}
