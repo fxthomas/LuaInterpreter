@@ -10,7 +10,11 @@
 
 @interface FXViewController : UIViewController
 
+- (void) setBackgroundRed;
 - (void) showAlert:(NSString*)str title:(NSString*)title;
 - (NSString*) helloString:(NSString*)name;
+- (double) fdouble:(double)nb;
+- (BOOL) fnot:(BOOL)b;
+- (NSArray*) fsplit:(NSString*)str;
 
 @end

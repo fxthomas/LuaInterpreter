@@ -23,11 +23,30 @@
 {
     [super viewDidLoad];
         
+    // Initialize interpreter
     LuaInterpreter *interp = [[LuaInterpreter alloc] init];
-    [interp registerSelector:@selector(showAlert:title:) target:self name:@"showalert" returnType:LuaArgumentTypeNone agumentTypes:2, LuaArgumentTypeString, LuaArgumentTypeString];
-    [interp registerSelector:@selector(helloString:) target:self name:@"helloString" returnType:LuaArgumentTypeString agumentTypes:1, LuaArgumentTypeString];
+    
+    // Register selectors as globals inside LUA
+    [interp registerSelector:@selector(setBackgroundRed) target:self name:@"showred"];
+    [interp registerSelector:@selector(showAlert:title:) target:self name:@"showalert" argumentTypes:2, LuaArgumentTypeString, LuaArgumentTypeString];
+    [interp registerSelector:@selector(helloString:) target:self name:@"helloString" returnType:LuaArgumentTypeString argumentTypes:1, LuaArgumentTypeString];
+    [interp registerSelector:@selector(fdouble:) target:self name:@"fdouble" returnType:LuaArgumentTypeNumber argumentTypes:1,LuaArgumentTypeNumber];
+    [interp registerSelector:@selector(fnot:) target:self name:@"fnot" returnType:LuaArgumentTypeBoolean argumentTypes:1, LuaArgumentTypeBoolean];
+    [interp registerSelector:@selector(fsplit:) target:self name:@"fsplit" returnType:LuaArgumentTypeMultiple argumentTypes:1, LuaArgumentTypeString];
+    
+    // Load test file
     [interp load:[[NSBundle mainBundle] pathForResource:@"test" ofType:@"lua"]];
+    
+    // Run file
     [interp run];
+    
+    // Call function with 1 expected return value
+    NSString *str = [interp call:@"testFunction" expectedReturnCount:1 withArguments:@"FX", nil];
+    NSLog(@"Lua testFunction(\"FX\"){1} returned \"%@\"", str);
+    
+    // Call function with 2
+    NSArray *ar = [interp call:@"testFunction" expectedReturnCount:2 withArguments:@"FX", nil];
+    NSLog(@"Lua testFunction(\"FX\"){2} returned \"%@\" and \"%@\"", [ar objectAtIndex:0], [ar objectAtIndex:1]);
 }
 
 - (void)viewDidUnload
@@ -67,12 +86,30 @@
     }
 }
 
+#pragma mark - Tests functions for LUA
+
 - (void) showAlert:(NSString *)str title:(NSString*)title {
     [[[UIAlertView alloc] initWithTitle:title message:str delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 - (NSString*) helloString:(NSString *)name {
     return [@"Hello " stringByAppendingString:name];
+}
+
+- (double) fdouble:(double)nb {
+    return nb*2;
+}
+
+- (BOOL) fnot:(BOOL)b {
+    return !b;
+}
+
+- (NSArray*) fsplit:(NSString *)str {
+    return [str componentsSeparatedByString:@" "];
+}
+
+- (void) setBackgroundRed {
+    self.view.backgroundColor = [UIColor redColor];
 }
 
 @end

@@ -15,7 +15,11 @@ typedef enum {
     LuaArgumentTypeNone,
     LuaArgumentTypeString,
     LuaArgumentTypeNumber,
-    LuaArgumentTypeObject
+    LuaArgumentTypeTryObject,
+    LuaArgumentTypeBoolean,
+    LuaArgumentTypeMultiple,
+    LuaArgumentTypeTable,
+    LuaArgumentTypeLightObject
 } LuaArgumentType;
 
 /**
@@ -34,8 +38,17 @@ typedef enum {
 - (BOOL) run;
 
 /**
+ * Runs a LUA function
+ */
+- (id) call:(NSString*)fname withArguments:(id)args, ... NS_REQUIRES_NIL_TERMINATION;
+- (id) call:(NSString*)fname expectedReturnCount:(int)count withArguments:(id)args, ... NS_REQUIRES_NIL_TERMINATION;
+
+/**
  * Register a selector under a global name, for use inside the LUA program.
  */
-- (void) registerSelector:(SEL)selector target:(id)target name:(NSString*)name returnType:(LuaArgumentType)returnType agumentTypes:(int)count, ...;
+- (void) registerSelector:(SEL)selector target:(id)target name:(NSString*)name returnType:(LuaArgumentType)returnType argumentTypes:(int)count, ...;
+- (void) registerSelector:(SEL)selector target:(id)target name:(NSString *)name argumentTypes:(int)count, ...;
+- (void) registerSelector:(SEL)selector target:(id)target name:(NSString *)name returnType:(LuaArgumentType)returnType;
+- (void) registerSelector:(SEL)selector target:(id)target name:(NSString *)name;
 
 @end
