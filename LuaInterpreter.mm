@@ -23,6 +23,7 @@ int _runSelector (lua_State *L) {
     id target = (__bridge id)lua_touserdata(L, lua_upvalueindex(1)); // Target
     SEL selector = (SEL)lua_touserdata(L, lua_upvalueindex(2)); // Selector to run
     NSArray *argTypes = (__bridge NSArray*)lua_touserdata(L, lua_upvalueindex(3)); // Argument types
+    LuaArgumentType returnType = (LuaArgumentType)lua_tonumber(L, lua_upvalueindex(4));
     
     // The argument count passed to ObjC by the LUA program is at the top of the stack
     int argCount = lua_gettop(L);
@@ -33,13 +34,17 @@ int _runSelector (lua_State *L) {
     }
     
     // Converts all LUA types into their respective ObjC values
-    NSMutableArray *arguments = [NSMutableArray array];
+    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[target methodSignatureForSelector:selector]];
+    [inv setSelector:selector];
+    [inv setTarget:target];
     for (int i = 0; i < argCount; i++) {
         switch ([[argTypes objectAtIndex:i] intValue]) {
             // String: Convert C String to NSString
-            case LuaArgumentTypeString:
-                [arguments addObject:[NSString stringWithCString:lua_tostring(L, -argCount + i) encoding:NSUTF8StringEncoding]];
+            case LuaArgumentTypeString: {
+                __unsafe_unretained NSString *str = [NSString stringWithCString:lua_tostring(L, -argCount + i) encoding:NSUTF8StringEncoding];
+                [inv setArgument:&str atIndex:2+i];
                 break;
+            }
             
             // TODO: Implement other data types
             default:
@@ -47,26 +52,26 @@ int _runSelector (lua_State *L) {
         }
     }
     
-    // Perform selector, given the number of expected arguments
-    // The pragma's are here to inform the compiler that it should't show warnings
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-    switch (argTypes.count) {
-        case 0:
-            [target performSelector:selector];
+    // Invoke selector
+    [inv invoke];
+    
+    // Clear the stack
+    lua_pop(L, argCount);
+    
+    // Put the returned value on the stack, if any
+    switch (returnType) {
+        case LuaArgumentTypeString: {
+            __unsafe_unretained NSString *ret; [inv getReturnValue:&ret];
+            lua_pushstring(L, [ret cStringUsingEncoding:NSUTF8StringEncoding]);
+            return 1;
             break;
-        case 1:
-            [target performSelector:selector withObject:[arguments objectAtIndex:0]];
-            break;
-        case 2:
-            [target performSelector:selector withObject:[arguments objectAtIndex:0] withObject:[arguments objectAtIndex:1]];
-            break;
+        }
+            
+        case LuaArgumentTypeNone:
         default:
+            return 0;
             break;
     }
-#pragma clang diagnostic pop
-    
-    return 0;
 }
 
 @interface LuaInterpreter() {
@@ -116,7 +121,7 @@ int _runSelector (lua_State *L) {
     return YES;
 }
 
-- (void) registerSelector:(SEL)selector target:(id)target name:(NSString *)name agumentTypes:(int)count, ... {
+- (void) registerSelector:(SEL)selector target:(id)target name:(NSString *)name returnType:(LuaArgumentType)returnType agumentTypes:(int)count, ... {
     // Copy argument types into an array for use with _runSelector
     NSMutableArray *argumentTypesArray = [NSMutableArray array];
     va_list argumentTypes;
@@ -130,9 +135,10 @@ int _runSelector (lua_State *L) {
     lua_pushlightuserdata(state, (__bridge void*)target); // We need to know the target in order to call the selector
     lua_pushlightuserdata(state, selector); // We need to know the selector
     lua_pushlightuserdata(state, (__bridge void*)argumentTypesArray); // We need to know the argument types to convert them from ObjC values
+    lua_pushnumber(state, returnType); // Push return type
     
     // Create a LUA-C closure with these upvalues
-    lua_pushcclosure(state, &_runSelector, 3);
+    lua_pushcclosure(state, &_runSelector, 4);
     
     // And register it under the provided name
     lua_setglobal(state, [name cStringUsingEncoding:NSUTF8StringEncoding]);

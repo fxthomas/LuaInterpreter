@@ -36,6 +36,6 @@ typedef enum {
 /**
  * Register a selector under a global name, for use inside the LUA program.
  */
-- (void) registerSelector:(SEL)selector target:(id)target name:(NSString*)name agumentTypes:(int)count, ...;
+- (void) registerSelector:(SEL)selector target:(id)target name:(NSString*)name returnType:(LuaArgumentType)returnType agumentTypes:(int)count, ...;
 
 @end

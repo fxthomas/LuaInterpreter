@@ -11,5 +11,6 @@
 @interface FXViewController : UIViewController
 
 - (void) showAlert:(NSString*)str title:(NSString*)title;
+- (NSString*) helloString:(NSString*)name;
 
 @end

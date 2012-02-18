@@ -24,7 +24,8 @@
     [super viewDidLoad];
         
     LuaInterpreter *interp = [[LuaInterpreter alloc] init];
-    [interp registerSelector:@selector(showAlert:title:) target:self name:@"showalert" agumentTypes:2, LuaArgumentTypeString, LuaArgumentTypeString];
+    [interp registerSelector:@selector(showAlert:title:) target:self name:@"showalert" returnType:LuaArgumentTypeNone agumentTypes:2, LuaArgumentTypeString, LuaArgumentTypeString];
+    [interp registerSelector:@selector(helloString:) target:self name:@"helloString" returnType:LuaArgumentTypeString agumentTypes:1, LuaArgumentTypeString];
     [interp load:[[NSBundle mainBundle] pathForResource:@"test" ofType:@"lua"]];
     [interp run];
 }
@@ -68,6 +69,10 @@
 
 - (void) showAlert:(NSString *)str title:(NSString*)title {
     [[[UIAlertView alloc] initWithTitle:title message:str delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
+- (NSString*) helloString:(NSString *)name {
+    return [@"Hello " stringByAppendingString:name];
 }
 
 @end
