@@ -48,6 +48,9 @@ int _runSelector (lua_State *L) {
     }
     
     // Perform selector, given the number of expected arguments
+    // The pragma's are here to inform the compiler that it should't show warnings
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     switch (argTypes.count) {
         case 0:
             [target performSelector:selector];
@@ -61,6 +64,8 @@ int _runSelector (lua_State *L) {
         default:
             break;
     }
+#pragma clang diagnostic pop
+    
     return 0;
 }
 
