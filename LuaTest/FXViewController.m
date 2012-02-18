@@ -7,6 +7,7 @@
 //
 
 #import "FXViewController.h"
+#import "LuaInterpreter.h"
 
 @implementation FXViewController
 
@@ -21,7 +22,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+        
+    LuaInterpreter *interp = [[LuaInterpreter alloc] init];
+    [interp registerSelector:@selector(showAlert:title:) target:self name:@"showalert" agumentTypes:2, LuaArgumentTypeString, LuaArgumentTypeString];
+    [interp load:[[NSBundle mainBundle] pathForResource:@"test" ofType:@"lua"]];
+    [interp run];
 }
 
 - (void)viewDidUnload
@@ -59,6 +64,10 @@
     } else {
         return YES;
     }
+}
+
+- (void) showAlert:(NSString *)str title:(NSString*)title {
+    [[[UIAlertView alloc] initWithTitle:title message:str delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 @end
