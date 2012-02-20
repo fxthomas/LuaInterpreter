@@ -47,6 +47,17 @@ else
   io.write (" -- Test: Multiple: FAIL (Values are: " .. a .. "," .. b .. "," .. c .. ")\n")
 end
 
+-- Test registering table-using C functions
+a = {};
+a["Doe"] = "John";
+a["Thomas"] = "FX";
+ra = freverse (a);
+if (ra["John"] == "Doe" and ra["FX"] == "Thomas") then
+  io.write (" -- Test: Tables: OK\n");
+else
+  io.write (" -- Test: Tables: FAIL\n");
+end
+
 -- Test function
 function testFunction (str)
   str1 = "Hello " .. str .. "!"
@@ -58,4 +69,11 @@ end
 function testArray ()
   ar = {1, 2, {3, 4, },}
   return ar
+end
+
+-- Test table input values
+function testArray2 (ar)
+  for key,value in pairs(ar) do
+    io.write ("Record at \"" .. key .. "\": \"" .. value.. "\"\n");
+  end
 end

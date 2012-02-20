@@ -33,6 +33,7 @@
     [interp registerSelector:@selector(fdouble:) target:self name:@"fdouble" returnType:LuaArgumentTypeNumber argumentTypes:1,LuaArgumentTypeNumber];
     [interp registerSelector:@selector(fnot:) target:self name:@"fnot" returnType:LuaArgumentTypeBoolean argumentTypes:1, LuaArgumentTypeBoolean];
     [interp registerSelector:@selector(fsplit:) target:self name:@"fsplit" returnType:LuaArgumentTypeMultiple argumentTypes:1, LuaArgumentTypeString];
+    [interp registerSelector:@selector(freverse:) target:self name:@"freverse" returnType:LuaArgumentTypeTable argumentTypes:1, LuaArgumentTypeTable];
     
     // Load test file
     [interp load:[[NSBundle mainBundle] pathForResource:@"test" ofType:@"lua"]];
@@ -50,6 +51,8 @@
     
     NSDictionary *dic = [interp call:@"testArray" expectedReturnCount:LuaArgumentTypeTable withArguments:nil];
     NSLog(@"%@", dic);
+    
+    [interp call:@"testArray2" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:@"FX", @"Thomas", @"John", @"Doe", nil], nil];
 }
 
 - (void)viewDidUnload
@@ -113,6 +116,14 @@
 
 - (void) setBackgroundRed {
     self.view.backgroundColor = [UIColor redColor];
+}
+
+- (NSDictionary *) freverse:(NSDictionary *)ar {
+    NSMutableDictionary *newdic = [NSMutableDictionary dictionary];
+    for (NSString *key in ar.allKeys) {
+        [newdic setObject:key forKey:[ar objectForKey:key]];
+    }
+    return newdic;
 }
 
 @end

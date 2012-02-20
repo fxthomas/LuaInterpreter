@@ -16,5 +16,6 @@
 - (double) fdouble:(double)nb;
 - (BOOL) fnot:(BOOL)b;
 - (NSArray*) fsplit:(NSString*)str;
+- (NSDictionary *) freverse:(NSDictionary*)ar;
 
 @end

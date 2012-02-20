@@ -15,7 +15,7 @@ typedef enum {
     LuaArgumentTypeNone,
     LuaArgumentTypeString,
     LuaArgumentTypeNumber,
-    LuaArgumentTypeTryObject,
+    LuaArgumentTypeObject,
     LuaArgumentTypeBoolean,
     LuaArgumentTypeMultiple,
     LuaArgumentTypeTable,

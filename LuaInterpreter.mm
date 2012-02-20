@@ -81,6 +81,22 @@ int lua_pushobject (lua_State *L, id object) {
         lua_pushstring(L, [(NSString*)object cStringUsingEncoding:NSUTF8StringEncoding]);
     } else if ([object isKindOfClass:[NSNumber class]]) {
         lua_pushnumber(L, [(NSNumber*)object doubleValue]);
+    } else if ([object isKindOfClass:[NSArray class]]) {
+        lua_newtable(L);
+        
+        for (NSUInteger i = 0; i < [object count]; i++) {
+            lua_pushnumber(L, i);
+            lua_pushobject(L, [object objectAtIndex:i]);
+            lua_settable(L, -3);
+        }
+    } else if ([object isKindOfClass:[NSDictionary class]]) {
+        lua_newtable(L);
+        
+        for (id key in [object allKeys]) {
+            lua_pushobject(L, key);
+            lua_pushobject(L, [object objectForKey:key]);
+            lua_settable(L, -3);
+        }
     } else {
         NSLog(@"LuaInterpreter: Warning: Unsupported class %@ in `lua_pushobject`", [object class]);
         return 0;
@@ -104,7 +120,6 @@ id lua_toobject (lua_State *L, int idx) {
         
         // Iterate through table
         while (lua_next(L, -2) != 0) {
-            lua_showstack(L);
             /* ‘key’ is at index -2 and ‘value’ at index -1 */
             id obj = lua_toobject(L, -1);
             id key = lua_toobject(L, -2);
@@ -113,17 +128,15 @@ id lua_toobject (lua_State *L, int idx) {
             }
             
             lua_pop(L, 1);  /* removes ‘value’; keeps ‘key’ for next iteration */
-            lua_showstack(L);
         }
         lua_pop(L, 1);
-        lua_showstack(L);
         
         return dic;
-    } else {
-
+    } else if (!lua_isnil(L, idx)) {
         NSLog(@"LuaInterpreter: Warning: Unsupported type `%@` in `lua_toobject`", lua_stype(L, idx));
-        return nil;
     }
+    
+    return nil;
 }
 
 int _runSelector (lua_State *L) {
@@ -163,6 +176,12 @@ int _runSelector (lua_State *L) {
                 break;
             }
                 
+            case LuaArgumentTypeTable: {
+                NSDictionary *dict = lua_toobject(L, -argCount + i);
+                [inv setArgument:&dict atIndex:2+i];
+                break;
+            }
+                
             // Boolean: Pretty straightforward now...
             case LuaArgumentTypeBoolean: {
                 BOOL b = lua_toboolean(L, -argCount + i);
@@ -198,9 +217,14 @@ int _runSelector (lua_State *L) {
         }
             
         // Try to understand an Objective-C object
-        case LuaArgumentTypeTryObject: {
+        case LuaArgumentTypeObject: {
             __unsafe_unretained id ret; [inv getReturnValue:&ret];
             return lua_pushobject(L, ret);
+        }
+            
+        case LuaArgumentTypeTable: {
+            __unsafe_unretained NSDictionary *table; [inv getReturnValue:&table];
+            return lua_pushobject(L, table);
         }
         
         // Boolean value
