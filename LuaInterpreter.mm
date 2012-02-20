@@ -17,7 +17,63 @@ extern "C" {
 int _runSelector (lua_State *L);
 int lua_pushobject (lua_State *L, id object);
 id lua_toobject (lua_State *L, int idx);
+NSString *lua_stype (lua_State *L, int idx);
+void lua_showstack (lua_State *L);
 
+}
+
+void lua_showstack (lua_State *L) {
+    NSLog(@"Stack count : %d", lua_gettop(L));
+    for (int i=0; i<lua_gettop(L); i++) NSLog(@"[%d] %@", i, lua_stype(L, -1-i));
+}
+
+NSString *lua_stype (lua_State *L, int idx) {
+    int _itype = lua_type(L, idx);
+    NSString *type = @"";
+    
+    switch (_itype) {
+        case LUA_TNIL:
+            type = @"nil";
+            break;
+            
+        case LUA_TSTRING:
+            type = @"string";
+            break;
+            
+        case LUA_TTABLE:
+            type = @"table";
+            break;
+            
+        case LUA_TTHREAD:
+            type = @"thread";
+            break;
+            
+        case LUA_TUSERDATA:
+            type = @"userdata";
+            break;
+            
+        case LUA_TLIGHTUSERDATA:
+            type = @"lightuserdata";
+            break;
+            
+        case LUA_TNUMBER:
+            type = @"number";
+            break;
+            
+        case LUA_TBOOLEAN:
+            type = @"boolean";
+            break;
+            
+        case LUA_TFUNCTION:
+            type = @"function";
+            break;
+            
+        default:
+            type = @"unknown";
+            break;
+    }
+    
+    return type;
 }
 
 int lua_pushobject (lua_State *L, id object) {
@@ -34,14 +90,38 @@ int lua_pushobject (lua_State *L, id object) {
 }
 
 id lua_toobject (lua_State *L, int idx) {
-    if (lua_isnumber(L, -1)) {
-        return [NSNumber numberWithDouble:lua_tonumber(L, -1)];
-    } else if (lua_isstring(L, -1)) {
-        return [NSString stringWithCString:lua_tostring(L, -1) encoding:NSUTF8StringEncoding];
-    } else if (lua_isboolean(L, -1)) {
-        return [NSNumber numberWithBool:lua_toboolean(L, -1)];
+    if (lua_isnumber(L, idx)) {
+        return [NSNumber numberWithDouble:lua_tonumber(L, idx)];
+    } else if (lua_isstring(L, idx)) {
+        return [NSString stringWithCString:lua_tostring(L, idx) encoding:NSUTF8StringEncoding];
+    } else if (lua_isboolean(L, idx)) {
+        return [NSNumber numberWithBool:lua_toboolean(L, idx)];
+    } else if (lua_istable(L, idx)) {
+        // Build table from stack
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        lua_pushvalue(L, idx); /* put the table back on the top of the stack */
+        lua_pushnil(L);  /* first key */
+        
+        // Iterate through table
+        while (lua_next(L, -2) != 0) {
+            lua_showstack(L);
+            /* ‘key’ is at index -2 and ‘value’ at index -1 */
+            id obj = lua_toobject(L, -1);
+            id key = lua_toobject(L, -2);
+            if (obj && key) {
+                [dic setObject:obj forKey:key];
+            }
+            
+            lua_pop(L, 1);  /* removes ‘value’; keeps ‘key’ for next iteration */
+            lua_showstack(L);
+        }
+        lua_pop(L, 1);
+        lua_showstack(L);
+        
+        return dic;
     } else {
-        NSLog(@"LuaInterpreter: Warning: Unsupported type in `lua_toobject`");
+
+        NSLog(@"LuaInterpreter: Warning: Unsupported type `%@` in `lua_toobject`", lua_stype(L, idx));
         return nil;
     }
 }

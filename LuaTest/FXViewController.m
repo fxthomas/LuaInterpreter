@@ -47,6 +47,9 @@
     // Call function with 2
     NSArray *ar = [interp call:@"testFunction" expectedReturnCount:2 withArguments:@"FX", nil];
     NSLog(@"Lua testFunction(\"FX\"){2} returned \"%@\" and \"%@\"", [ar objectAtIndex:0], [ar objectAtIndex:1]);
+    
+    NSDictionary *dic = [interp call:@"testArray" expectedReturnCount:LuaArgumentTypeTable withArguments:nil];
+    NSLog(@"%@", dic);
 }
 
 - (void)viewDidUnload

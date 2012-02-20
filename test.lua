@@ -53,3 +53,9 @@ function testFunction (str)
   str2 = str .. ", how are you today?"
   return str1, str2
 end
+
+-- Test table return values
+function testArray ()
+  ar = {1, 2, {3, 4, },}
+  return ar
+end
