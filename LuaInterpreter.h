@@ -27,6 +27,8 @@ typedef enum {
  */
 @interface LuaInterpreter : NSObject
 
+@property (nonatomic, retain) NSMutableArray *retainedObjects;
+
 /**
  * Loads a LUA source/binary file in memory, specified by `filepath`, without running it.
  */
@@ -50,5 +52,10 @@ typedef enum {
 - (void) registerSelector:(SEL)selector target:(id)target name:(NSString *)name argumentTypes:(int)count, ...;
 - (void) registerSelector:(SEL)selector target:(id)target name:(NSString *)name returnType:(LuaArgumentType)returnType;
 - (void) registerSelector:(SEL)selector target:(id)target name:(NSString *)name;
+
+/**
+ * Gets a global value
+ */
+- (id) global:(NSString*)name;
 
 @end

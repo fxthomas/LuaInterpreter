@@ -19,8 +19,24 @@ int lua_pushobject (lua_State *L, id object);
 id lua_toobject (lua_State *L, int idx);
 NSString *lua_stype (lua_State *L, int idx);
 void lua_showstack (lua_State *L);
+void lua_setpath (lua_State *L, NSString* path);
 
 }
+
+void lua_setpath (lua_State *L, NSString* path)
+{
+    lua_getglobal( L, "package" );
+    lua_getfield( L, -1, "path" ); // get field "path" from table at top of stack (-1)
+    NSString * cur_path = [NSString stringWithUTF8String:lua_tostring( L, -1 )]; // grab path string from top of stack
+    cur_path = [cur_path stringByAppendingString:@";"]; // do your path magic here
+    cur_path = [cur_path stringByAppendingString:path];
+    cur_path = [cur_path stringByAppendingString:@"/?.lua"];
+    lua_pop( L, 1 ); // get rid of the string on the stack we just pushed on line 5
+    lua_pushstring( L, [cur_path UTF8String]); // push the new one
+    lua_setfield( L, -2, "path" ); // set the field "path" in table at -2 with value at top of stack
+    lua_pop( L, 1 ); // get rid of package table from top of stack
+}
+
 
 void lua_showstack (lua_State *L) {
     NSLog(@"Stack count : %d", lua_gettop(L));
@@ -98,45 +114,56 @@ int lua_pushobject (lua_State *L, id object) {
             lua_settable(L, -3);
         }
     } else {
-        NSLog(@"LuaInterpreter: Warning: Unsupported class %@ in `lua_pushobject`", [object class]);
-        return 0;
+        //NSLog(@"LuaInterpreter: Warning: Unsupported class %@ in `lua_pushobject`", [object class]);
+        lua_pushlightuserdata(L, (__bridge void*)object);
     }
     
     return 1;
 }
 
 id lua_toobject (lua_State *L, int idx) {
-    if (lua_isnumber(L, idx)) {
-        return [NSNumber numberWithDouble:lua_tonumber(L, idx)];
-    } else if (lua_isstring(L, idx)) {
-        return [NSString stringWithCString:lua_tostring(L, idx) encoding:NSUTF8StringEncoding];
-    } else if (lua_isboolean(L, idx)) {
-        return [NSNumber numberWithBool:lua_toboolean(L, idx)];
-    } else if (lua_istable(L, idx)) {
-        // Build table from stack
-        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-        lua_pushvalue(L, idx); /* put the table back on the top of the stack */
-        lua_pushnil(L);  /* first key */
-        
-        // Iterate through table
-        while (lua_next(L, -2) != 0) {
-            /* ‘key’ is at index -2 and ‘value’ at index -1 */
-            id obj = lua_toobject(L, -1);
-            id key = lua_toobject(L, -2);
-            if (obj && key) {
-                [dic setObject:obj forKey:key];
-            }
-            
-            lua_pop(L, 1);  /* removes ‘value’; keeps ‘key’ for next iteration */
-        }
-        lua_pop(L, 1);
-        
-        return dic;
-    } else if (!lua_isnil(L, idx)) {
-        NSLog(@"LuaInterpreter: Warning: Unsupported type `%@` in `lua_toobject`", lua_stype(L, idx));
-    }
+    int type = lua_type(L, idx);
     
-    return nil;
+    switch (type) {
+        case LUA_TSTRING:
+            return [NSString stringWithCString:lua_tostring(L, idx) encoding:NSUTF8StringEncoding];
+            
+        case LUA_TNUMBER:
+            return [NSNumber numberWithDouble:lua_tonumber(L, idx)];
+            
+        case LUA_TBOOLEAN:
+            return [NSNumber numberWithBool:lua_toboolean(L, idx)];
+            
+        case LUA_TTABLE: {
+            // Build table from stack
+            NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+            lua_pushvalue(L, idx); /* put the table back on the top of the stack */
+            lua_pushnil(L);  /* first key */
+            
+            // Iterate through table
+            while (lua_next(L, -2) != 0) {
+                /* ‘key’ is at index -2 and ‘value’ at index -1 */
+                id obj = lua_toobject(L, -1);
+                id key = lua_toobject(L, -2);
+                if (obj && key) {
+                    [dic setObject:obj forKey:key];
+                }
+                
+                lua_pop(L, 1);  /* removes ‘value’; keeps ‘key’ for next iteration */
+            }
+            lua_pop(L, 1);
+            
+            return dic;
+        }
+            
+        case LUA_TLIGHTUSERDATA:
+            return (__bridge NSObject*)lua_touserdata(L, idx);
+            
+        case LUA_TNIL:
+        default:
+            NSLog(@"LuaInterpreter: Warning: Unsupported type `%@` in `lua_toobject`", lua_stype(L, idx));
+            return nil;
+    }
 }
 
 int _runSelector (lua_State *L) {
@@ -187,6 +214,12 @@ int _runSelector (lua_State *L) {
                 BOOL b = lua_toboolean(L, -argCount + i);
                 [inv setArgument:&b atIndex:2+i];
             }
+                
+            case LuaArgumentTypeObject:
+            case LuaArgumentTypeLightObject: {
+                NSObject *obj = lua_toobject(L, -argCount + i);
+                [inv setArgument:&obj atIndex:2+i];
+            }
             
             // TODO: Implement other data types
             default:
@@ -233,6 +266,11 @@ int _runSelector (lua_State *L) {
             lua_pushboolean(L, ret);
             return 1;
         }
+            
+        case LuaArgumentTypeLightObject: {
+            __unsafe_unretained NSObject *obj; [inv getReturnValue:&obj];
+            return lua_pushobject(L, obj);
+        }
         
         // Multiple return values need to be stored inside an NSArray
         case LuaArgumentTypeMultiple: {
@@ -263,11 +301,18 @@ int _runSelector (lua_State *L) {
 
 @implementation LuaInterpreter
 
+@synthesize retainedObjects = _retainedObjects;
+
 #pragma mark - Base methods
 
 - (void) dealloc {
     // Close the LUA state
     lua_close(state);
+    self.retainedObjects = nil;
+    
+#if !__has_feature(objc_arc)
+    [super dealloc];
+#endif
 }
 
 - (id) init {
@@ -276,6 +321,7 @@ int _runSelector (lua_State *L) {
         // Create a new LUA state
         state = luaL_newstate();
         didRunOnce = NO;
+        self.retainedObjects = [NSMutableArray array];
         
         // Open all libraries for use within LUA programs
         luaL_openlibs(state);
@@ -284,14 +330,19 @@ int _runSelector (lua_State *L) {
 }
 
 - (BOOL) load:(NSString *)filepath {
+    // Set search path for requires
+    lua_setpath(state, [filepath stringByDeletingLastPathComponent]);
+    
     // Loads the LUA file
     int ret = luaL_loadfile(state, [filepath cStringUsingEncoding:NSUTF8StringEncoding]);
     
     // If it did not succeed, tell the user
     if (ret) {
-        NSLog(@"LuaInterpreter: Error loading file [%@]", filepath);
+        NSLog(@"LuaInterpreter: Error loading file [%@]: %s", filepath, lua_tostring(state, -1));
+        lua_showstack(state);
         return NO;
     }
+    
     return YES;
 }
 
@@ -303,7 +354,7 @@ int _runSelector (lua_State *L) {
     
     // If the call did not succeed, display the error
     if (ret) {
-        NSLog(@"LuaInterpreter: Error: %@", [NSString stringWithCString:lua_tostring(state, -1) encoding:NSUTF8StringEncoding]);
+        NSLog(@"LuaInterpreter: Error: %s", lua_tostring(state, -1));
         return NO;
     }
     
@@ -339,6 +390,7 @@ int _runSelector (lua_State *L) {
     }
     
     // Call function
+    lua_showstack(state);
     if (lua_pcall(state, argCount, 0, 0) != 0) {
         NSLog(@"LuaInterpreter: Error: Function `%@`: %@", fname, [NSString stringWithCString:lua_tostring(state, -1) encoding:NSUTF8StringEncoding]);
     }
@@ -402,6 +454,9 @@ int _runSelector (lua_State *L) {
 #pragma mark - Registering Selectors
 
 - (void) _registerSelector:(SEL)selector target:(id)target name:(NSString *)name returnType:(LuaArgumentType)returnType argumentTypesArray:(NSArray *)argumentTypesArray {
+    // Retain arguments, just in case
+    if (argumentTypesArray) [_retainedObjects addObject:argumentTypesArray];
+    
     // Now push these values onto the LUA stack
     lua_pushlightuserdata(state, (__bridge void*)target); // We need to know the target in order to call the selector
     lua_pushlightuserdata(state, selector); // We need to know the selector
@@ -446,6 +501,14 @@ int _runSelector (lua_State *L) {
     }
     
     [self _registerSelector:selector target:target name:name returnType:returnType argumentTypesArray:argumentTypesArray];
+}
+
+#pragma mark - Global values
+- (id) global:(NSString *)name {
+    lua_getglobal(state, [name cStringUsingEncoding:NSUTF8StringEncoding]);
+    id ret = lua_toobject(state, -1);
+    lua_pop(state, 1);
+    return ret;
 }
 
 @end
